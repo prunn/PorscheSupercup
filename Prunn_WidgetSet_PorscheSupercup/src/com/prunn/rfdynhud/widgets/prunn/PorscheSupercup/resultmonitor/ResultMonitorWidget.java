@@ -4,9 +4,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.io.File;
 import java.io.IOException;
-
-import com.prunn.rfdynhud.plugins.tlcgenerator.StandardTLCGenerator;
-
 import net.ctdp.rfdynhud.gamedata.FinishStatus;
 import net.ctdp.rfdynhud.gamedata.LiveGameData;
 import net.ctdp.rfdynhud.gamedata.ScoringInfo;
@@ -76,16 +73,15 @@ public class ResultMonitorWidget extends Widget
     private StringValue[] driverNames = null;
     private StringValue[] driverTeam = null;
     private FloatValue[] gaps = null;
-    StandardTLCGenerator gen = new StandardTLCGenerator();
     private BooleanProperty AbsTimes = new BooleanProperty("Use absolute times", false) ;
     private int NumOfPNG = 0;
     private String[] listPNG;
     
     
     @Override
-    public void onRealtimeEntered( LiveGameData gameData, boolean isEditorMode )
+    public void onCockpitEntered( LiveGameData gameData, boolean isEditorMode )
     {
-        super.onCockpitEntered( gameData, isEditorMode );
+        super.onRealtimeEntered( gameData, isEditorMode );
         String cpid = "Y29weXJpZ2h0QFBydW5uMjAxMQ";
         if(!isEditorMode)
             log(cpid);
@@ -197,9 +193,9 @@ public class ResultMonitorWidget extends Widget
             if(vsi != null)
             {
                 positions[i].update( vsi.getPlace( false ) );
-                driverNames[i].update( gen.ShortName( vsi.getDriverNameShort()) );
+                driverNames[i].update( PrunnWidgetSetPorscheSupercup.ShortName( vsi.getDriverNameShort()) );
                 
-                driverTeam[i].update( gen.generateShortTeamNames( vsi.getVehicleInfo().getTeamName(), gameData.getFileSystem().getConfigFolder() ));
+                driverTeam[i].update( PrunnWidgetSetPorscheSupercup.generateShortTeamNames( vsi.getVehicleInfo().getTeamName(), gameData.getFileSystem().getConfigFolder() ));
                 if(driverTeam[i].getValue().length() > 8 && (driverTeam[i].getValue().substring( 0, 5 ).equals( "PMSCS" ) || driverTeam[i].getValue().substring( 0, 5 ).equals( "PCCAU" )))
                     driverTeam[i].update( driverTeam[i].getValue().substring( 8 ) );
                 else if(driverTeam[i].getValue().length() > 7 && (driverTeam[i].getValue().substring( 0, 4 ).equals("PMSC") || driverTeam[i].getValue().substring( 0, 4 ).equals("PCCG") || driverTeam[i].getValue().substring( 0, 4 ).equals("PCCA")  || driverTeam[i].getValue().substring( 0, 4 ).equals("ALMS")))
@@ -241,19 +237,19 @@ public class ResultMonitorWidget extends Widget
         texture.drawImage( texPos, offsetX + width/150, offsetY+rowHeight, true, null );
         texture.drawImage( texGapFirst, offsetX + width*82/100, offsetY+rowHeight, true, null );
         
-        
-        for(int j=0; j < NumOfPNG; j++)
-        {
-            String headquarters = scoringInfo.getVehicleScoringInfo( 0 ).getVehicleInfo().getTeamHeadquarters().toUpperCase();
-            if(headquarters.length() >= listPNG[j].length() && headquarters.contains( listPNG[j].toUpperCase() )) 
+        if(scoringInfo.getVehicleScoringInfo(0).getVehicleInfo()!=null){
+            String headquarters = scoringInfo.getVehicleScoringInfo(0).getVehicleInfo().getTeamHeadquarters().toUpperCase();
+            for(int j=0; j < NumOfPNG; j++)
             {
-                imgCountry.setValue("prunn/PorscheSupercup/Countries/" + listPNG[j] + ".png");
-                texCountry = imgCountry.getImage().getScaledTextureImage( width*5/100, rowHeight*61/100, texCountry, isEditorMode );
-                texture.drawImage( texCountry, offsetX + width*76/100, offsetY + rowHeight + rowHeight*20/100, true, null );
-                break;
+                if(headquarters.length() >= listPNG[j].length() && headquarters.contains( listPNG[j].toUpperCase() )) 
+                {
+                    imgCountry.setValue("prunn/PorscheSupercup/Countries/" + listPNG[j] + ".png");
+                    texCountry = imgCountry.getImage().getScaledTextureImage( width*5/100, rowHeight*61/100, texCountry, isEditorMode );
+                    texture.drawImage( texCountry, offsetX + width*76/100, offsetY + rowHeight + rowHeight*20/100, true, null );
+                    break;
+                }
             }
         }
-        
         texPos = imgPos.getImage().getScaledTextureImage( width*6/100, rowHeight*95/100, texPos, isEditorMode );
         
         
@@ -263,18 +259,19 @@ public class ResultMonitorWidget extends Widget
             if(scoringInfo.getVehicleScoringInfo( i ).getFinishStatus() != FinishStatus.DQ && scoringInfo.getVehicleScoringInfo( i ).getFinishStatus() != FinishStatus.DNF)
                 texture.drawImage( texPos, offsetX + width/150, offsetY+rowHeight*(i+1), true, null );
             
-            for(int j=0; j < NumOfPNG; j++)
-            {
-                String headquarters = scoringInfo.getVehicleScoringInfo( i ).getVehicleInfo().getTeamHeadquarters().toUpperCase();
-                if(headquarters.length() >= listPNG[j].length() && headquarters.contains( listPNG[j].toUpperCase() )) 
+            if(scoringInfo.getVehicleScoringInfo(i).getVehicleInfo()!=null){
+                String headquarters = scoringInfo.getVehicleScoringInfo(i).getVehicleInfo().getTeamHeadquarters().toUpperCase();
+                for(int j=0; j < NumOfPNG; j++)
                 {
-                    imgCountry.setValue("prunn/PorscheSupercup/Countries/" + listPNG[j] + ".png");
-                    texCountry = imgCountry.getImage().getScaledTextureImage( width*5/100, rowHeight*61/100, texCountry, isEditorMode );
-                    texture.drawImage( texCountry, offsetX + width*76/100, offsetY + rowHeight*(i+1) + rowHeight*20/100, true, null );
-                    break;
+                    if(headquarters.length() >= listPNG[j].length() && headquarters.contains( listPNG[j].toUpperCase() )) 
+                    {
+                        imgCountry.setValue("prunn/PorscheSupercup/Countries/" + listPNG[j] + ".png");
+                        texCountry = imgCountry.getImage().getScaledTextureImage( width*5/100, rowHeight*61/100, texCountry, isEditorMode );
+                        texture.drawImage( texCountry, offsetX + width*76/100, offsetY + rowHeight*(i+1) + rowHeight*20/100, true, null );
+                        break;
+                    }
                 }
-            }
-                
+            }   
         }
         
     }

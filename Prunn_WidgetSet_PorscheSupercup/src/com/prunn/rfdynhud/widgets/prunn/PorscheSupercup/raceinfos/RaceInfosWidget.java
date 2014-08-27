@@ -3,8 +3,6 @@ package com.prunn.rfdynhud.widgets.prunn.PorscheSupercup.raceinfos;
 import java.awt.Font;
 import java.io.File;
 import java.io.IOException;
-
-import com.prunn.rfdynhud.plugins.tlcgenerator.StandardTLCGenerator;
 import com.prunn.rfdynhud.widgets.prunn._util.PrunnWidgetSetPorscheSupercup;
 
 import net.ctdp.rfdynhud.gamedata.Laptime;
@@ -104,15 +102,13 @@ public class RaceInfosWidget extends Widget
     private BoolValue racefinished = new BoolValue();
     
     private int widgetpart = 0;//0-info 1-pitstop 2-fastestlap 3-winner
-    private final FloatValue FastestLapTime = new FloatValue(-1F, 0.001F);
-    StandardTLCGenerator gen = new StandardTLCGenerator();
-    
+    private final FloatValue FastestLapTime = new FloatValue(-1F, 0.001F);    
     
     
     @Override
-    public void onRealtimeEntered( LiveGameData gameData, boolean isEditorMode )
+    public void onCockpitEntered( LiveGameData gameData, boolean isEditorMode )
     {
-        super.onCockpitEntered( gameData, isEditorMode );
+        super.onRealtimeEntered( gameData, isEditorMode );
         String cpid = "Y29weXJpZ2h0QFBydW5uMjAxMQ";
         if(!isEditorMode)
             log(cpid);
@@ -322,7 +318,7 @@ public class RaceInfosWidget extends Widget
         
         int rowHeight = height / 3;
         if(isEditorMode)
-            widgetpart = 3;
+            widgetpart = 1;
         switch(widgetpart)
         {
             case 1: //Pit Stop
@@ -339,15 +335,17 @@ public class RaceInfosWidget extends Widget
                         texture.drawImage( texCountry, offsetX + width*60/100, offsetY + rowHeight + rowHeight*20/100, true, null );
                     }
                     //team
-                    for(int j=0; j < NumOfPNG; j++)
-                    {
+                    if(gameData.getScoringInfo().getViewedVehicleScoringInfo().getVehicleInfo()!=null){
                         String headquarters = gameData.getScoringInfo().getViewedVehicleScoringInfo().getVehicleInfo().getTeamHeadquarters().toUpperCase();
-                        if(headquarters.length() >= listPNG[j].length() && headquarters.contains( listPNG[j].toUpperCase() )) 
+                        for(int j=0; j < NumOfPNG; j++)
                         {
-                            imgCountry.setValue("prunn/PorscheSupercup/Countries/" + listPNG[j] + ".png");
-                            texCountry = imgCountry.getImage().getScaledTextureImage( width*10/100, rowHeight*61/100, texCountry, isEditorMode );
-                            texture.drawImage( texCountry, offsetX + width*60/100, offsetY + rowHeight*2 + rowHeight*20/100, true, null );
-                            break;
+                            if(headquarters.length() >= listPNG[j].length() && headquarters.contains( listPNG[j].toUpperCase() )) 
+                            {
+                                imgCountry.setValue("prunn/PorscheSupercup/Countries/" + listPNG[j] + ".png");
+                                texCountry = imgCountry.getImage().getScaledTextureImage( width*10/100, rowHeight*61/100, texCountry, isEditorMode );
+                                texture.drawImage( texCountry, offsetX + width*60/100, offsetY + rowHeight*2 + rowHeight*20/100, true, null );
+                                break;
+                            }
                         }
                     }
                     break;
@@ -367,15 +365,17 @@ public class RaceInfosWidget extends Widget
                         texture.drawImage( texCountry, offsetX + width*60/100, offsetY + rowHeight + rowHeight*20/100, true, null );
                     }
                     //team
-                    for(int j=0; j < NumOfPNG; j++)
-                    {
+                    if(gameData.getScoringInfo().getFastestLapVSI().getVehicleInfo()!=null){
                         String headquarters = gameData.getScoringInfo().getFastestLapVSI().getVehicleInfo().getTeamHeadquarters().toUpperCase();
-                        if(headquarters.length() >= listPNG[j].length() && headquarters.contains( listPNG[j].toUpperCase() )) 
+                        for(int j=0; j < NumOfPNG; j++)
                         {
-                            imgCountry.setValue("prunn/PorscheSupercup/Countries/" + listPNG[j] + ".png");
-                            texCountry = imgCountry.getImage().getScaledTextureImage( width*10/100, rowHeight*61/100, texCountry, isEditorMode );
-                            texture.drawImage( texCountry, offsetX + width*60/100, offsetY + rowHeight*2 + rowHeight*20/100, true, null );
-                            break;
+                            if(headquarters.length() >= listPNG[j].length() && headquarters.contains( listPNG[j].toUpperCase() )) 
+                            {
+                                imgCountry.setValue("prunn/PorscheSupercup/Countries/" + listPNG[j] + ".png");
+                                texCountry = imgCountry.getImage().getScaledTextureImage( width*10/100, rowHeight*61/100, texCountry, isEditorMode );
+                                texture.drawImage( texCountry, offsetX + width*60/100, offsetY + rowHeight*2 + rowHeight*20/100, true, null );
+                                break;
+                            }
                         }
                     }
                     break;
@@ -399,15 +399,17 @@ public class RaceInfosWidget extends Widget
                         texture.drawImage( texCountry, offsetX + width*51/100, offsetY + rowHeight + rowHeight*20/100, true, null );
                     }
                     //team
-                    for(int j=0; j < NumOfPNG; j++)
-                    {
+                    if(gameData.getScoringInfo().getLeadersVehicleScoringInfo().getVehicleInfo()!=null){
                         String headquarters = gameData.getScoringInfo().getLeadersVehicleScoringInfo().getVehicleInfo().getTeamHeadquarters().toUpperCase();
-                        if(headquarters.length() >= listPNG[j].length() && headquarters.contains( listPNG[j].toUpperCase() )) 
+                        for(int j=0; j < NumOfPNG; j++)
                         {
-                            imgCountry.setValue("prunn/PorscheSupercup/Countries/" + listPNG[j] + ".png");
-                            texCountry = imgCountry.getImage().getScaledTextureImage( width*10/100, rowHeight*61/100, texCountry, isEditorMode );
-                            texture.drawImage( texCountry, offsetX + width*51/100, offsetY + rowHeight*2 + rowHeight*20/100, true, null );
-                            break;
+                            if(headquarters.length() >= listPNG[j].length() && headquarters.contains( listPNG[j].toUpperCase() )) 
+                            {
+                                imgCountry.setValue("prunn/PorscheSupercup/Countries/" + listPNG[j] + ".png");
+                                texCountry = imgCountry.getImage().getScaledTextureImage( width*10/100, rowHeight*61/100, texCountry, isEditorMode );
+                                texture.drawImage( texCountry, offsetX + width*51/100, offsetY + rowHeight*2 + rowHeight*20/100, true, null );
+                                break;
+                            }
                         }
                     }
                     break;
@@ -426,15 +428,17 @@ public class RaceInfosWidget extends Widget
                         texture.drawImage( texCountry, offsetX + width*60/100, offsetY + rowHeight + rowHeight*20/100, true, null );
                     }
                     //team
-                    for(int j=0; j < NumOfPNG; j++)
-                    {
+                    if(gameData.getScoringInfo().getLeadersVehicleScoringInfo().getVehicleInfo().getTeamHeadquarters()!=null){
                         String headquarters = gameData.getScoringInfo().getViewedVehicleScoringInfo().getVehicleInfo().getTeamHeadquarters().toUpperCase();
-                        if(headquarters.length() >= listPNG[j].length() && headquarters.contains( listPNG[j].toUpperCase() )) 
+                        for(int j=0; j < NumOfPNG; j++)
                         {
-                            imgCountry.setValue("prunn/PorscheSupercup/Countries/" + listPNG[j] + ".png");
-                            texCountry = imgCountry.getImage().getScaledTextureImage( width*10/100, rowHeight*61/100, texCountry, isEditorMode );
-                            texture.drawImage( texCountry, offsetX + width*60/100, offsetY + rowHeight*2 + rowHeight*20/100, true, null );
-                            break;
+                            if(headquarters.length() >= listPNG[j].length() && headquarters.contains( listPNG[j].toUpperCase() )) 
+                            {
+                                imgCountry.setValue("prunn/PorscheSupercup/Countries/" + listPNG[j] + ".png");
+                                texCountry = imgCountry.getImage().getScaledTextureImage( width*10/100, rowHeight*61/100, texCountry, isEditorMode );
+                                texture.drawImage( texCountry, offsetX + width*60/100, offsetY + rowHeight*2 + rowHeight*20/100, true, null );
+                                break;
+                            }
                         }
                     }
                     /*if(gameData.getScoringInfo().getViewedVehicleScoringInfo().getNextInFront( false ) == null)
@@ -456,7 +460,7 @@ public class RaceInfosWidget extends Widget
         ScoringInfo scoringInfo = gameData.getScoringInfo();
     	sessionTime.update(scoringInfo.getSessionTime());
     	if(isEditorMode)
-            widgetpart = 3;
+            widgetpart = 1;
     	
     	if ( needsCompleteRedraw || sessionTime.hasChanged() || FastestLapTime.hasChanged())
         {
@@ -476,7 +480,7 @@ public class RaceInfosWidget extends Widget
             {
                 case 1: //Pit Stop
                         VehicleScoringInfo currentcarinfos = gameData.getScoringInfo().getViewedVehicleScoringInfo();
-                        top3info1 = gen.generateShortTeamNames( currentcarinfos.getVehicleInfo().getTeamName(), gameData.getFileSystem().getConfigFolder() );
+                        top3info1 = PrunnWidgetSetPorscheSupercup.generateShortTeamNames( currentcarinfos.getVehicleInfo().getTeamName(), gameData.getFileSystem().getConfigFolder() );
                         
                         if(top3info1.length() > 8 && (top3info1.substring( 0, 5 ).equals( "PMSCS" ) || top3info1.substring( 0, 5 ).equals( "PCCAU" )))
                             top3info1 = top3info1.substring( 8 );
@@ -494,7 +498,7 @@ public class RaceInfosWidget extends Widget
                         //pos = Integer.toString( currentcarinfosInfo.getPlace(false) );
                         
                         //dsPos.draw( offsetX, offsetY, pos, texture );
-                        dsName.draw( offsetX, offsetY, gen.ShortName( top2info1 ), texture );
+                        dsName.draw( offsetX, offsetY, PrunnWidgetSetPorscheSupercup.ShortName( top2info1 ), texture );
                         dsTeam.draw( offsetX, offsetY, top3info1, texture );
                         /*if(currentcarinfos.getNumOutstandingPenalties() > 0)
                             top3info2="";
@@ -526,7 +530,7 @@ public class RaceInfosWidget extends Widget
                 case 2: //Fastest Lap
                         VehicleScoringInfo fastcarinfos = gameData.getScoringInfo().getFastestLapVSI();
                         
-                        top3info1 = gen.generateShortTeamNames( fastcarinfos.getVehicleInfo().getTeamName(), gameData.getFileSystem().getConfigFolder() );
+                        top3info1 = PrunnWidgetSetPorscheSupercup.generateShortTeamNames( fastcarinfos.getVehicleInfo().getTeamName(), gameData.getFileSystem().getConfigFolder() );
                         if(top3info1.length() > 8 && (top3info1.substring( 0, 5 ).equals( "PMSCS" ) || top3info1.substring( 0, 5 ).equals( "PCCAU" )))
                             top3info1 = top3info1.substring( 8 );
                         else if(top3info1.length() > 7 && (top3info1.substring( 0, 4 ).equals("PMSC") || top3info1.substring( 0, 4 ).equals("PCCG") || top3info1.substring( 0, 4 ).equals("PCCA") || top3info1.substring( 0, 4 ).equals("ALMS")))
@@ -547,7 +551,7 @@ public class RaceInfosWidget extends Widget
                         top2info2 = TimingUtil.getTimeAsLaptimeString(FastestLapTime.getValue() );
                         top3info2 = "Lap " + String.valueOf(  fastcarinfos.getLapsCompleted() );
                         dsWinner.draw( offsetX, offsetY, top1info1, texture );
-                        dsName.draw( offsetX, offsetY, gen.ShortName( top2info1 ), texture );
+                        dsName.draw( offsetX, offsetY, PrunnWidgetSetPorscheSupercup.ShortName( top2info1 ), texture );
                         dsTime.draw( offsetX, offsetY, top2info2, texture);
                         dsTeam.draw( offsetX, offsetY, top3info1, texture );
                         dsTitle.draw( offsetX, offsetY, top3info2, texture );
@@ -557,7 +561,7 @@ public class RaceInfosWidget extends Widget
                 case 3: //Winner
                         VehicleScoringInfo winnercarinfos = gameData.getScoringInfo().getLeadersVehicleScoringInfo();
                         
-                        top3info1 = gen.generateShortTeamNames( winnercarinfos.getVehicleInfo().getTeamName(), gameData.getFileSystem().getConfigFolder() );
+                        top3info1 = PrunnWidgetSetPorscheSupercup.generateShortTeamNames( winnercarinfos.getVehicleInfo().getTeamName(), gameData.getFileSystem().getConfigFolder() );
                         
                         if(top3info1.length() > 8 && (top3info1.substring( 0, 5 ).equals( "PMSCS" ) || top3info1.substring( 0, 5 ).equals( "PCCAU" )))
                             top3info1 = top3info1.substring( 8 );
@@ -591,7 +595,7 @@ public class RaceInfosWidget extends Widget
                         top2info2b = NumberUtil.formatFloat( gameData.getTrackInfo().getTrack().getTrackLength() * gameData.getScoringInfo().getLeadersVehicleScoringInfo().getLapsCompleted() / 1000f, 3, true ) + " km";
                         top3info2b = NumberUtil.formatFloat( gameData.getTrackInfo().getTrack().getTrackLength() * gameData.getScoringInfo().getLeadersVehicleScoringInfo().getLapsCompleted() / 1000f / laps * 3600, 3, true ) + " km/h";
                         
-                        dsName.draw( offsetX, offsetY, gen.ShortName( top2info1 ), fontColor2.getColor() ,texture );
+                        dsName.draw( offsetX, offsetY, PrunnWidgetSetPorscheSupercup.ShortName( top2info1 ), fontColor2.getColor() ,texture );
                         dsTeam.draw( offsetX, offsetY, top3info1, texture );
                         dsWinner.draw( offsetX, offsetY, top1info1, texture );
                         dsTimeB.draw( offsetX, offsetY, top2info2b, texture);
@@ -603,7 +607,7 @@ public class RaceInfosWidget extends Widget
                 default: //Info
                         VehicleScoringInfo currentcarinfosInfo = gameData.getScoringInfo().getViewedVehicleScoringInfo();
                         
-                        top3info1 = gen.generateShortTeamNames( currentcarinfosInfo.getVehicleInfo().getTeamName(), gameData.getFileSystem().getConfigFolder() );
+                        top3info1 = PrunnWidgetSetPorscheSupercup.generateShortTeamNames( currentcarinfosInfo.getVehicleInfo().getTeamName(), gameData.getFileSystem().getConfigFolder() );
                         if(top3info1.length() > 8 && (top3info1.substring( 0, 5 ).equals( "PMSCS" ) || top3info1.substring( 0, 5 ).equals( "PCCAU" )))
                             top3info1 = top3info1.substring( 8 );
                         else if(top3info1.length() > 7 && (top3info1.substring( 0, 4 ).equals("PMSC") || top3info1.substring( 0, 4 ).equals("PCCG") || top3info1.substring( 0, 4 ).equals("PCCA") || top3info1.substring( 0, 4 ).equals("ALMS")))
@@ -617,7 +621,7 @@ public class RaceInfosWidget extends Widget
                             top3info1 = top3info1.substring( 0, MaxTeamLengh.getValue() );
                         
 
-                        top2info1 = gen.ShortName( currentcarinfosInfo.getDriverNameShort());
+                        top2info1 = PrunnWidgetSetPorscheSupercup.ShortName( currentcarinfosInfo.getDriverNameShort());
                         //pos = Integer.toString( currentcarinfosInfo.getPlace(false) );
                         
                         //dsPos.draw( offsetX, offsetY, pos, texture );

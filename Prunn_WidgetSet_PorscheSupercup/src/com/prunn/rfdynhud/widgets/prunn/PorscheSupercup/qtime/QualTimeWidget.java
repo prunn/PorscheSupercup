@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.io.IOException;
 
-import com.prunn.rfdynhud.plugins.tlcgenerator.StandardTLCGenerator;
 import com.prunn.rfdynhud.widgets.prunn._util.PrunnWidgetSetPorscheSupercup;
 
 import net.ctdp.rfdynhud.gamedata.FinishStatus;
@@ -74,8 +73,6 @@ public class QualTimeWidget extends Widget
     private final ImagePropertyWithTexture imgTimeYellow = new ImagePropertyWithTexture( "imgTimeYellow", "prunn/PorscheSupercup/data_slower.png" );
     private final ImagePropertyWithTexture imgTimeYellowFinish = new ImagePropertyWithTexture( "imgTimeYellowFinish", "prunn/PorscheSupercup/data_slower.png" );
     private IntProperty fontyoffset = new IntProperty("Y Font Offset", 0);
-    private StandardTLCGenerator gen = new StandardTLCGenerator();
-    
     
     private final ColorProperty fontColor2 = new ColorProperty("fontColor2", PrunnWidgetSetPorscheSupercup.FONT_COLOR2_NAME);
     private final FontProperty posFont = new FontProperty("positionFont", PrunnWidgetSetPorscheSupercup.POS_FONT_NAME);
@@ -106,9 +103,9 @@ public class QualTimeWidget extends Widget
     
     
     @Override
-    public void onRealtimeEntered( LiveGameData gameData, boolean isEditorMode )
+    public void onCockpitEntered( LiveGameData gameData, boolean isEditorMode )
     {
-        super.onCockpitEntered( gameData, isEditorMode );
+        super.onRealtimeEntered( gameData, isEditorMode );
         String cpid = "Y29weXJpZ2h0QFBydW5uMjAxMQ";
         if(!isEditorMode)
             log(cpid);
@@ -405,7 +402,7 @@ public class QualTimeWidget extends Widget
         
         if ( needsCompleteRedraw || ( clock.c() && leaderID.hasChanged() ) )
         {
-            dsName.draw( offsetX, offsetY, gen.ShortName( currentcarinfos.getDriverNameShort()),(currentcarinfos.getPlace(false) == 1) ? fontColor2.getColor() : fontColor1.getColor(), texture );
+            dsName.draw( offsetX, offsetY, PrunnWidgetSetPorscheSupercup.ShortName( currentcarinfos.getDriverNameShort()),(currentcarinfos.getPlace(false) == 1) ? fontColor2.getColor() : fontColor1.getColor(), texture );
             
         }
         

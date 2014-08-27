@@ -3,8 +3,6 @@ package com.prunn.rfdynhud.widgets.prunn.PorscheSupercup.qualifinfo;
 import java.awt.Font;
 import java.io.File;
 import java.io.IOException;
-
-import com.prunn.rfdynhud.plugins.tlcgenerator.StandardTLCGenerator;
 import com.prunn.rfdynhud.widgets.prunn._util.PrunnWidgetSetPorscheSupercup;
 import com.prunn.rfdynhud.widgets.prunn.PorscheSupercup.qtime.QualTimeWidget;
 
@@ -62,7 +60,6 @@ public class QualifInfoWidget extends Widget
     private long visibleEnd;
     private IntValue cveh = new IntValue();
     private BoolValue cpit = new BoolValue();
-    StandardTLCGenerator gen = new StandardTLCGenerator();
     private StringValue team = new StringValue();
     private StringValue name = new StringValue();
     private StringValue pos = new StringValue();
@@ -72,9 +69,9 @@ public class QualifInfoWidget extends Widget
     
     
     @Override
-    public void onRealtimeEntered( LiveGameData gameData, boolean isEditorMode )
+    public void onCockpitEntered( LiveGameData gameData, boolean isEditorMode )
     {
-        super.onCockpitEntered( gameData, isEditorMode );
+        super.onRealtimeEntered( gameData, isEditorMode );
         String cpid = "Y29weXJpZ2h0QFBydW5uMjAxMQ";
         if(!isEditorMode)
             log(cpid);
@@ -186,15 +183,17 @@ public class QualifInfoWidget extends Widget
             texture.drawImage( texCountry, offsetX + width*78/100, offsetY + rowHeight*20/100, true, null );
         }
         //team
-        for(int j=0; j < NumOfPNG; j++)
-        {
+        if(currentcarinfos.getVehicleInfo()!=null){
             String headquarters = currentcarinfos.getVehicleInfo().getTeamHeadquarters().toUpperCase();
-            if(headquarters.length() >= listPNG[j].length() && headquarters.contains( listPNG[j].toUpperCase() )) 
+            for(int j=0; j < NumOfPNG; j++)
             {
-                imgCountry.setValue("prunn/PorscheSupercup/Countries/" + listPNG[j] + ".png");
-                texCountry = imgCountry.getImage().getScaledTextureImage( width*14/100, rowHeight*61/100, texCountry, isEditorMode );
-                texture.drawImage( texCountry, offsetX + width*78/100, offsetY + rowHeight + rowHeight*20/100, true, null );
-                break;
+                if(headquarters.length() >= listPNG[j].length() && headquarters.contains( listPNG[j].toUpperCase() )) 
+                {
+                    imgCountry.setValue("prunn/PorscheSupercup/Countries/" + listPNG[j] + ".png");
+                    texCountry = imgCountry.getImage().getScaledTextureImage( width*14/100, rowHeight*61/100, texCountry, isEditorMode );
+                    texture.drawImage( texCountry, offsetX + width*78/100, offsetY + rowHeight + rowHeight*20/100, true, null );
+                    break;
+                }
             }
         }
     }
@@ -210,9 +209,9 @@ public class QualifInfoWidget extends Widget
         {
     	    VehicleScoringInfo currentcarinfos = gameData.getScoringInfo().getViewedVehicleScoringInfo();
             
-        	name.update( gen.ShortName( currentcarinfos.getDriverNameShort() ) );
+        	name.update( PrunnWidgetSetPorscheSupercup.ShortName( currentcarinfos.getDriverNameShort() ) );
             pos.update( NumberUtil.formatFloat( currentcarinfos.getPlace(false), 0, true));
-            team.update( gen.generateShortTeamNames( currentcarinfos.getVehicleInfo().getTeamName(), gameData.getFileSystem().getConfigFolder() ));
+            team.update( PrunnWidgetSetPorscheSupercup.generateShortTeamNames( currentcarinfos.getVehicleInfo().getTeamName(), gameData.getFileSystem().getConfigFolder() ));
                 
             if(team.getValue().length() > 8 && (team.getValue().substring( 0, 5 ).equals( "PMSCS" ) || team.getValue().substring( 0, 5 ).equals( "PCCAU" )))
                 team.update( team.getValue().substring( 8 ) );

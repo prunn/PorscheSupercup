@@ -2,8 +2,6 @@ package com.prunn.rfdynhud.widgets.prunn.PorscheSupercup.qualiftower;
 
 import java.awt.Font;
 import java.io.IOException;
-
-import com.prunn.rfdynhud.plugins.tlcgenerator.StandardTLCGenerator;
 import net.ctdp.rfdynhud.gamedata.LiveGameData;
 import net.ctdp.rfdynhud.gamedata.ScoringInfo;
 import net.ctdp.rfdynhud.gamedata.VehicleScoringInfo;
@@ -61,7 +59,6 @@ public class QualifTowerWidget extends Widget
     private short[] positions = null;
     private String[] names = null;
     private StringValue[] gaps = null;
-    StandardTLCGenerator gen = new StandardTLCGenerator();
     private static final InputAction showWidget = new InputAction( "Show Widget", true );
     public static Boolean isvisible = false;
     public static Boolean visible()
@@ -70,9 +67,9 @@ public class QualifTowerWidget extends Widget
     }
    
     @Override
-    public void onRealtimeEntered( LiveGameData gameData, boolean isEditorMode )
+    public void onCockpitEntered( LiveGameData gameData, boolean isEditorMode )
     {
-        super.onCockpitEntered( gameData, isEditorMode );
+        super.onRealtimeEntered( gameData, isEditorMode );
         String cpid = "Y29weXJpZ2h0QFBydW5uMjAxMQ";
         if(!isEditorMode)
             log(cpid);
@@ -167,7 +164,7 @@ public class QualifTowerWidget extends Widget
         {
             VehicleScoringInfo vsi = scoringInfo.getVehicleScoringInfo( i );
             positions[i] = vsi.getPlace( false );
-            names[i] = gen.ShortName( vsi.getDriverName() );
+            names[i] = PrunnWidgetSetPorscheSupercup.ShortName( vsi.getDriverName() );
             if(i==0)
                 gaps[i].update(TimingUtil.getTimeAsLaptimeString(leaderTime));
             else

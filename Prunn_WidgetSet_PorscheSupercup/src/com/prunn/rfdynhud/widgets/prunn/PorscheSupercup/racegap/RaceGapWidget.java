@@ -2,12 +2,9 @@ package com.prunn.rfdynhud.widgets.prunn.PorscheSupercup.racegap;
 
 import java.awt.Font;
 import java.io.IOException;
-
-import com.prunn.rfdynhud.plugins.tlcgenerator.StandardTLCGenerator;
 import com.prunn.rfdynhud.widgets.prunn._util.PrunnWidgetSetPorscheSupercup;
 import com.prunn.rfdynhud.widgets.prunn.PorscheSupercup.raceinfos.RaceInfosWidget;
 import com.prunn.rfdynhud.widgets.prunn.PorscheSupercup.racetower.RaceTowerWidget;
-
 import net.ctdp.rfdynhud.gamedata.LiveGameData;
 import net.ctdp.rfdynhud.gamedata.ScoringInfo;
 import net.ctdp.rfdynhud.gamedata.VehicleScoringInfo;
@@ -70,7 +67,6 @@ public class RaceGapWidget extends Widget
     private int place, place2;
     private String gap;
     //private IntValue cpos = new IntValue();
-    StandardTLCGenerator gen = new StandardTLCGenerator();
     
     public static Boolean isvisible = false;
     public static Boolean visible()
@@ -80,9 +76,9 @@ public class RaceGapWidget extends Widget
     
     
     @Override
-    public void onRealtimeEntered( LiveGameData gameData, boolean isEditorMode )
+    public void onCockpitEntered( LiveGameData gameData, boolean isEditorMode )
     {
-        super.onCockpitEntered( gameData, isEditorMode );
+        super.onRealtimeEntered( gameData, isEditorMode );
         String cpid = "Y29weXJpZ2h0QFBydW5uMjAxMQ";
         if(!isEditorMode)
             log(cpid);
@@ -138,9 +134,9 @@ public class RaceGapWidget extends Widget
         }
         
         place = vsi1.getPlace(false);
-        name = gen.ShortName( vsi1.getDriverNameShort());
+        name = PrunnWidgetSetPorscheSupercup.ShortName( vsi1.getDriverNameShort());
         place2 = vsi2.getPlace(false);
-        name2 = gen.ShortName( vsi2.getDriverNameShort());
+        name2 = PrunnWidgetSetPorscheSupercup.ShortName( vsi2.getDriverNameShort());
     }
     /**
      * {@inheritDoc}

@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.io.IOException;
 
-import com.prunn.rfdynhud.plugins.tlcgenerator.StandardTLCGenerator;
 import net.ctdp.rfdynhud.gamedata.GamePhase;
 import net.ctdp.rfdynhud.gamedata.LiveGameData;
 import net.ctdp.rfdynhud.gamedata.ScoringInfo;
@@ -64,7 +63,6 @@ public class RaceTowerWidget extends Widget
     private short[] positions = null;
     private String[] names = null;
     private String[] gaps = null;
-    StandardTLCGenerator gen = new StandardTLCGenerator();
     public static Boolean isvisible = false;
     public static Boolean visible()
     {
@@ -72,9 +70,9 @@ public class RaceTowerWidget extends Widget
     }
    
     @Override
-    public void onRealtimeEntered( LiveGameData gameData, boolean isEditorMode )
+    public void onCockpitEntered( LiveGameData gameData, boolean isEditorMode )
     {
-        super.onCockpitEntered( gameData, isEditorMode );
+        super.onRealtimeEntered( gameData, isEditorMode );
         String cpid = "Y29weXJpZ2h0QFBydW5uMjAxMQ";
         if(!isEditorMode)
             log(cpid);
@@ -164,7 +162,7 @@ public class RaceTowerWidget extends Widget
             
                 VehicleScoringInfo vsi = scoringInfo.getVehicleScoringInfo( i );
                 positions[i] = vsi.getPlace( false );
-                names[i] = gen.ShortName( vsi.getDriverName() );
+                names[i] = PrunnWidgetSetPorscheSupercup.ShortName( vsi.getDriverName() );
                 if(data==0)
                 {
                     if(i==0)
